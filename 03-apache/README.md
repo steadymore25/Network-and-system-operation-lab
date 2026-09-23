@@ -22,7 +22,7 @@ The captures cover September 16, September 20, and September 23, 2026. The exact
 
 ## Procedure
 
-The steps below follow the visible command history and capture sequence. Some later screenshots contain earlier terminal output, so capture time is not always command execution time.
+The Apache installation check is placed after the package update to keep setup steps together. Its screenshot was captured later, on September 23. The remaining steps follow the visible command history and capture sequence; capture time is not always command execution time.
 
 ### 1. Set the hostname and update package lists
 
@@ -37,7 +37,26 @@ sudo apt update
 
 ![Hostname, addresses, and package update](screenshots/01-hostname-ip-and-package-update.png)
 
-### 2. Check SSH service access
+### 2. Run the Apache installation command and confirm the package
+
+The added capture, dated September 23 in its original filename, shows this command on `WEB-01`:
+
+```bash
+sudo apt install apache2
+```
+
+APT completed its package checks and reported:
+
+```text
+apache2 is already the newest version (2.4.58-1ubuntu8.15).
+0 upgraded, 0 newly installed, 0 to remove and 439 not upgraded.
+```
+
+This confirms that Apache was installed and that APT considered it the newest available version at the time of this check. No packages were installed or upgraded by this command. The capture does not show the original installation or verify that the Apache service was running.
+
+![Apache installation command confirming the existing package](screenshots/20-apache-installation-check.png)
+
+### 3. Check SSH service access
 
 An OpenSSH installation attempt contained a spelling mistake:
 
@@ -70,7 +89,7 @@ Further status views showed SSH listening on `0.0.0.0` and `::`, port 22.
 
 ![Full SSH status view](screenshots/06-ssh-status-full-view.png)
 
-### 3. Check the local HTTP response and view the personal webpage
+### 4. Check the local HTTP response and view the personal webpage
 
 The terminal history preserved in screenshot 11 includes:
 
@@ -84,7 +103,7 @@ The browser displayed the personal webpage at `192.168.1.31`. It included “Hi,
 
 ![Personal webpage loaded using the server address](screenshots/09-custom-webpage-in-browser.png)
 
-### 4. Open the webpage source in nano
+### 5. Open the webpage source in nano
 
 The terminal history shows:
 
@@ -96,7 +115,7 @@ The nano capture shows the file open with the title `Eddie | Linux Server`, head
 
 ![Personal webpage HTML open in nano](screenshots/10-index-html-in-nano.png)
 
-### 5. Configure and enable UFW
+### 6. Configure and enable UFW
 
 ```bash
 sudo apt install ufw -y
@@ -113,7 +132,7 @@ UFW then reported that the firewall was active and enabled on system startup. It
 
 ![Successful HTTP headers and UFW configuration](screenshots/11-http-headers-and-ufw-configuration.png)
 
-### 6. Stop Apache, check the failure, and start it again
+### 7. Stop Apache, check the failure, and start it again
 
 ```bash
 sudo ufw status
@@ -128,7 +147,7 @@ After Apache was stopped, curl failed to connect to localhost on port 80. The se
 
 ![Apache stop/start test and HTTP recovery](screenshots/12-apache-stop-start-http-test.png)
 
-### 7. Log in from Windows using SSH
+### 8. Log in from Windows using SSH
 
 In Windows PowerShell:
 
@@ -146,7 +165,7 @@ The remote prompt showed `steady@WEB-01`, and `hostname` returned `WEB-01`.
 
 ![Windows SSH login and remote hostname verification](screenshots/14-windows-ssh-login-and-hostname.png)
 
-### 8. Record later access failures
+### 9. Record later access failures
 
 The September 20 browser captures show the same server address. The first includes an error icon but no readable error explanation. Two further crops show the address bar only; they do not establish whether the webpage loaded.
 
@@ -172,25 +191,6 @@ sudo ss - tlnp | grep :80
 The IPv4 address was still `192.168.1.31`. After the stop command, curl could not connect to localhost port 80. The `ss` command is reproduced as typed, including the space after `-`; it returned an address-parsing error rather than a listener list. No subsequent correction or recovery is shown.
 
 ![Stopped Apache, failed local HTTP request, and ss syntax error](screenshots/19-apache-stopped-and-ss-command-error.png)
-
-### 9. Run the Apache installation command and confirm the package
-
-The added capture, dated September 23 in its original filename, shows this command on `WEB-01`:
-
-```bash
-sudo apt install apache2
-```
-
-APT completed its package checks and reported:
-
-```text
-apache2 is already the newest version (2.4.58-1ubuntu8.15).
-0 upgraded, 0 newly installed, 0 to remove and 439 not upgraded.
-```
-
-This confirms that Apache was installed and that APT considered it the newest available version at the time of this check. No packages were installed or upgraded by this command. The capture does not show the original installation or verify that the Apache service was running.
-
-![Apache installation command confirming the existing package](screenshots/20-apache-installation-check.png)
 
 ## Configuration
 
